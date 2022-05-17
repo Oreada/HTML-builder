@@ -29,5 +29,3 @@ process.stdin.on('data', (input) => {
 });
 
 process.on('exit', () => process.stdout.write('Good luck at the course!'));
-
-
