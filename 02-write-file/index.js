@@ -1,6 +1,8 @@
 const path = require('path');
 const pathJoin = path.join(__dirname, './written.txt');
 
+const process = require('process');
+
 const fs = require('fs');
 let streamWrite = fs.createWriteStream(pathJoin);
 
@@ -12,8 +14,6 @@ streamWrite.on('error', (err) => {
   }
   process.exit();
 });
-
-const process = require('process');
 
 process.stdout.write('Hello, student! Could you write something?\n');
 
