@@ -12,7 +12,7 @@ async function readDir() {
       const stat = await fs.stat(filePath);
 
       if (file.isFile()) {
-        process.stdout.write(`${fileNamePure} - ${path.extname(file.name).slice(1)} - ${stat.size} bytes\n`);
+        process.stdout.write(`${fileNamePure} - ${path.extname(file.name).slice(1)} - ${stat.size}b\n`);
       }
     }
   } catch (err) {
