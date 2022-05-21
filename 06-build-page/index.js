@@ -8,13 +8,13 @@ const pathJoinComponents = path.join(__dirname, './components');
 const pathJoinProject = path.join(__dirname, './project-dist');
 const pathJoinIndexHtml = path.join(pathJoinProject, './index.html');
 
-async function noName() {
+async function createHtmlWithInsertComponents() {
   await fs.promises.mkdir(pathJoinProject, { recursive: true });
   await fs.promises.writeFile(pathJoinIndexHtml, '', 'utf-8');
 
   const inStream = fs.createReadStream(pathJoinTemplate);
   const outStream = new stream;
-  const rl = readline.createInterface(inStream, outStream);  // построчное чтение './template.html'
+  const rl = readline.createInterface(inStream, outStream);  // line-by-line reading './template.html'
 
   const files = await fs.promises.readdir(pathJoinComponents, { withFileTypes: true });
 
@@ -50,4 +50,4 @@ async function noName() {
   });
 }
 
-noName();
+createHtmlWithInsertComponents();
