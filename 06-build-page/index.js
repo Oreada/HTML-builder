@@ -82,7 +82,7 @@ async function joinFilesToOneBundle() {
           let index = fileState.indexOf(file.name);
           fileState.splice(index, 1);
           if (fileState.length === 0) {
-            streamWriteFile.write(array.join('\n'));
+            streamWriteFile.write(array.reverse().join('\n'));
           }
         });
       }
