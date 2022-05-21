@@ -3,10 +3,17 @@ const readline = require('readline');
 const stream = require('stream');
 
 const path = require('path');
+
 const pathJoinTemplate = path.join(__dirname, './template.html');
 const pathJoinComponents = path.join(__dirname, './components');
 const pathJoinProject = path.join(__dirname, './project-dist');
 const pathJoinIndexHtml = path.join(pathJoinProject, './index.html');
+
+const pathJoinStyles = path.join(__dirname, './styles');
+const pathJoinBundle = path.join(__dirname, 'project-dist', './style.css');
+
+const pathSource = path.join(__dirname, './assets');
+const pathToCopy = path.join(__dirname, 'project-dist', './assets');
 
 async function createHtmlWithInsertComponents() {
   await fs.promises.mkdir(pathJoinProject, { recursive: true });
@@ -50,11 +57,6 @@ async function createHtmlWithInsertComponents() {
   });
 }
 
-createHtmlWithInsertComponents();
-
-const pathJoinStyles = path.join(__dirname, './styles');
-const pathJoinBundle = path.join(__dirname, 'project-dist', './style.css');
-
 async function joinFilesToOneBundle() {
   try {
     let array = [];
@@ -91,4 +93,28 @@ async function joinFilesToOneBundle() {
   }
 }
 
+async function copyDir(pathDirSource, pathDirToCopy) {
+  try {
+    await fs.promises.rm(pathDirToCopy, { recursive: true, force: true });
+    await fs.promises.mkdir(pathDirToCopy, { recursive: true });
+
+    const collection = await fs.promises.readdir(pathDirSource, { withFileTypes: true });
+
+    for (let file of collection) {
+      let mySource = path.join(pathDirSource, `./${file.name}`);
+      let myCopy = path.join(pathDirToCopy, `./${file.name}`);
+      if (file.isDirectory()) {
+        copyDir(mySource, myCopy);
+      } else {
+        await fs.promises.copyFile(mySource, myCopy);
+      }
+    }
+
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+createHtmlWithInsertComponents();
 joinFilesToOneBundle();
+copyDir(pathSource, pathToCopy);
