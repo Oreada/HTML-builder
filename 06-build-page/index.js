@@ -16,9 +16,6 @@ async function noName() {
   const outStream = new stream;
   const rl = readline.createInterface(inStream, outStream);  // построчное чтение './template.html'
 
-  //let templateValue = await fs.promises.readFile(pathJoinTemplate, 'utf-8');
-  // console.log(templateValue);
-
   const files = await fs.promises.readdir(pathJoinComponents, { withFileTypes: true });
 
   let lines = [];
@@ -31,14 +28,16 @@ async function noName() {
       let templateValue = line;
       let indexFirst = line.indexOf('{{');
       let indexLast = line.indexOf('}}');
+
       if (indexFirst == -1 || indexLast == -1) {
         await fs.promises.appendFile(pathJoinIndexHtml, templateValue + '\n', 'utf-8');
       } else {
         let nameFileComponent = line.slice(indexFirst + 2, indexLast);  // header||footer||articles||about...
         for (const file of files) {
+
           const filePath = path.join(__dirname, './components', file.name);
           const fileNamePure = path.parse(filePath).name;  // name without extension
-          if (nameFileComponent === fileNamePure) {
+          if ((nameFileComponent === fileNamePure) && (file.isFile()) && (path.extname(file.name) === '.html')) {
             let regExp = new RegExp(`{{${nameFileComponent}}}`, 'g');
             let componentHtml = await fs.promises.readFile(filePath, 'utf-8');
             templateValue = templateValue.replace(regExp, componentHtml);
