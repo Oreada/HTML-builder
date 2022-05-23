@@ -1,3 +1,12 @@
+/*
+В пятой задаче для тестирования нужно добавлять файлы из папки test-files,
+чтобы увидеть в результате раскачивающиеся листики и качели.
+В процессе этого тестирования в консоли девтулза вылезает ошибка
+"Failed to load resource: the server responded with a status of 404 (Not Found)".
+Проблема в том, что в тестовых файлах с качелями есть строка "background-image: url(bg.png);",
+а самого файла "bg.png" в наших материалах нет. Так что это ошибка не моя, а составителя таска.
+*/
+
 const path = require('path');
 const pathJoinStyles = path.join(__dirname, './styles');
 const pathJoinBundle = path.join(__dirname, 'project-dist', './bundle.css');
